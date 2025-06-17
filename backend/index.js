@@ -8,7 +8,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import "dotenv/config";
 import path from "path";
-
+import session from "express-session"; // <-- Add this import
+import cartRoutes from "./routes/cart.js";
 // dotenv.config();
 
 const connectDB = async () => {
