@@ -24,29 +24,29 @@ function App() {
 
   return (
     <>
-    <AdminHeader />
-     <AdminSubHeader
+      <AdminHeader />
+      <AdminSubHeader
         onSearchProduct={setProductSearchQuery}
         onSearchCategory={setCategorySearchQuery}
       />
-    <Routes>
-      <Route path="/" element={<HomeController />} />
+      <Routes>
+        <Route path="/" element={<HomeController />} />
 
-      <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path='/admin/register' element={<AdminRegister />} />
+        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path='/admin/register' element={<AdminRegister />} />
 
-      <Route path='/admin/products' element={<ProtectedRoute><Products /></ProtectedRoute>} />
-      <Route path="/admin/add-product" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
-      <Route path="/admin/update-product/:id" element={<ProtectedRoute><UpdateProduct /></ProtectedRoute>} />
-      <Route path="/admin/product/search" element={<ProtectedRoute><SearchProduct /></ProtectedRoute>} />
+        <Route path='/admin/products' element={<ProtectedRoute><Products /></ProtectedRoute>} />
+        <Route path="/admin/add-product" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+        <Route path="/admin/update-product/:id" element={<ProtectedRoute><UpdateProduct /></ProtectedRoute>} />
+        <Route path="/admin/product/search" element={<ProtectedRoute><SearchProduct /></ProtectedRoute>} />
 
-      <Route path='/admin/categories' element={<ProtectedRoute><Categories /></ProtectedRoute>} />
-      <Route path='/admin/add-category' element={<ProtectedRoute><AddCategory /></ProtectedRoute>} />
-      <Route path="/admin/update-category/:id" element={<ProtectedRoute><UpdateCategory /></ProtectedRoute>} />
+        <Route path='/admin/categories' element={<ProtectedRoute><Categories /></ProtectedRoute>} />
+        <Route path='/admin/add-category' element={<ProtectedRoute><AddCategory /></ProtectedRoute>} />
+        <Route path="/admin/update-category/:id" element={<ProtectedRoute><UpdateCategory /></ProtectedRoute>} />
 
 
-    </Routes>
+      </Routes>
     </>
   )
 }
