@@ -3,13 +3,15 @@ import adminRoutes from "./routes/admin.js";
 import categoryRoutes from "./routes/category.js";
 import productRoutes from "./routes/product.js";
 import authRoutes from "./routes/auth.js";
+import cartRoutes from "./routes/cart.js";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import "dotenv/config";
 import path from "path";
-import session from "express-session"; // <-- Add this import
-import cartRoutes from "./routes/cart.js";
+
+import session from "express-session";
+
 // dotenv.config();
 
 const connectDB = async () => {
