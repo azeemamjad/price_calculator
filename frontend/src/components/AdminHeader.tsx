@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { Link,  useLocation } from 'react-router-dom'
 
 const AdminHeader = () => {
-  const location = useLocation();
+  const location = useLocation()
+  const path = location.pathname
   const handleLogout = () => {
     localStorage.removeItem('token');
     // Optionally redirect to login page:
@@ -18,10 +20,14 @@ const AdminHeader = () => {
     { name: 'Categories', path: '/admin/categories' },
   ]
 
+  if(!path.includes('admin')) {
+    return (
+      <></>
+    ); // Don't show header on login or register pages
+  }
   return (
     <header className="bg-blue-700 text-white shadow-md p-4 flex justify-between items-center">
       <h1 className="text-xl font-bold">Admin Panel</h1>
-
       <nav className="space-x-4">
         {isAuthenticated && navItems.map(item => (
           <Link

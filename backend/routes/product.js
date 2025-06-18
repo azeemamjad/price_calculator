@@ -40,21 +40,6 @@ router.post("/", authMiddleware, upload.array("pictures"), async (req, res) => {
   }
 });
 
-// Get all products
-router.get("/", async (req, res) => {
-  const products = await Product.find().populate("category", "name");
-  res.json(products);
-});
-
-// Get product details
-router.get("/:id", async (req, res) => {
-  const product = await Product.findById(req.params.id).populate(
-    "category",
-    "name"
-  );
-  if (!product) return res.status(404).json({ message: "Product not found" });
-  res.json(product);
-});
 
 // 📥 Get all products with pagination and optional category filter
 router.get("/", authMiddleware, async (req, res) => {
@@ -144,6 +129,18 @@ router.get("/search", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+
+// Get product details
+router.get("/:id", async (req, res) => {
+  const product = await Product.findById(req.params.id).populate(
+    "category",
+    "name"
+  );
+  if (!product) return res.status(404).json({ message: "Product not found" });
+  res.json(product);
+});
+
 
 // 📥 Get product by ID
 router.get("/:id", authMiddleware, async (req, res) => {

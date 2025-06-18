@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-function AdminRegister() {
+function Register({role}: { role?: string }) {
   const navigate = useNavigate();
   
     // ✅ Only run this on initial mount
@@ -17,7 +17,8 @@ function AdminRegister() {
     lastname: '',
     username: '',
     email: '',
-    password: ''
+    password: '',
+    role: role || 'customer' // Default to customer if no role provided
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +50,8 @@ function AdminRegister() {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Admin Registration</h2>
+      {role === 'admin' ? (<h2 className="text-xl font-bold mb-4">Admin Registration</h2>) 
+      : (<h2 className="text-xl font-bold mb-4">Customer Registration</h2>)}
       <form onSubmit={handleSubmit} className="space-y-3">
         <input name="firstname" placeholder="First Name" className="w-full p-2 border rounded" onChange={handleChange} required />
         <input name="lastname" placeholder="Last Name" className="w-full p-2 border rounded" onChange={handleChange} required />
@@ -58,11 +60,14 @@ function AdminRegister() {
         <input type="password" name="password" placeholder="Password" className="w-full p-2 border rounded" onChange={handleChange} required />
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">Register</button>
       </form>
-      <p className="mt-2 text-sm">
+      {role === 'admin' ? <p className="mt-2 text-sm">
         Already registered? <Link to="/admin/login" className="text-blue-600 underline">Login</Link>
-      </p>
+      </p>:
+      <p className="mt-2 text-sm">
+        Already registered? <Link to="/login" className="text-blue-600 underline">Login</Link>
+      </p>}
     </div>
   );
 }
 
-export default AdminRegister;
+export default Register;

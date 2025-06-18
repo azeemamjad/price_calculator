@@ -1,5 +1,4 @@
 import express from "express";
-import adminRoutes from "./routes/admin.js";
 import categoryRoutes from "./routes/category.js";
 import productRoutes from "./routes/product.js";
 import authRoutes from "./routes/auth.js";
@@ -42,7 +41,6 @@ app.use(
   })
 );
 // Protect with auth middleware internally as shown in each router
-app.use("/api/admin", adminRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);

@@ -13,7 +13,7 @@ function AdminDashboard() {
   const token = localStorage.getItem('token');
   useEffect(() => {
     // Fetch admin info
-    fetch('http://localhost:5000/api/admin/profile', {
+    fetch('http://localhost:5000/api/auth/profile', {
       headers: {
         Authorization: `Bearer ${token}`,
       },

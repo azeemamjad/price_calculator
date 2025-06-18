@@ -8,7 +8,7 @@ const router = express.Router()
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { firstname, lastname, username, email, password } = req.body
+    const { firstname, lastname, username, email, password, role } = req.body
 
     if (!firstname || !lastname || !username || !email || !password) {
       return res.status(400).json({ message: 'Please enter all fields' })
@@ -26,7 +26,8 @@ router.post('/register', async (req, res) => {
       lastName: lastname,
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role: role || 'customer' // default to 'customer' if no role provided
     })
 
     await newUser.save()
@@ -40,7 +41,8 @@ router.post('/register', async (req, res) => {
         username: newUser.username,
         email: newUser.email,
         firstName: newUser.firstName,
-        lastName: newUser.lastName
+        lastName: newUser.lastName,
+        role: newUser.role
       }
     })
   } catch (error) {
@@ -68,7 +70,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' })
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+    const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET, { expiresIn: '1d' })
 
     res.json({
       token,
@@ -77,7 +79,34 @@ router.post('/login', async (req, res) => {
         username: user.username,
         email: user.email,
         firstName: user.firstName,
-        lastName: user.lastName
+        lastName: user.lastName,
+        role: user.role 
+      }
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server error' })
+  }
+})
+
+// Get user profile
+router.get('/profile', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1]
+    if (!token) return res.status(401).json({ message: 'Unauthorized' })
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const user = await User.findById(decoded.id).select('-password')
+    if (!user) return res.status(404).json({ message: 'User not found' })
+
+    res.json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role
       }
     })
   } catch (error) {

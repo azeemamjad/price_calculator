@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function AdminLogin() {
+function Login({role}: {role: 'admin' | 'customer'}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -10,9 +10,12 @@ function AdminLogin() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      navigate('/admin'); // Redirect if already logged in
+      if (role === 'admin') {
+        navigate('/admin'); // Redirect to admin dashboard if logged in as admin
+      } else {
+          navigate('/'); // Redirect to home if logged in as customer
     }
-  }, [navigate]);
+  }}, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +30,11 @@ function AdminLogin() {
       if (res.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user_id', data.user.id)
-        navigate('/admin'); // Go to admin dashboard
+        if(data.user.role === 'customer') {
+          navigate('/'); // Go to customer home
+        } else {
+          navigate('/admin'); // Go to admin dashboard
+        }
       } else {
         alert(data.message || 'Login failed');
       }
@@ -39,7 +46,9 @@ function AdminLogin() {
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Admin Login</h2>
+      {role === 'admin' ? 
+      (<h2 className="text-xl font-bold mb-4">Admin Login</h2>) :
+       (<h2 className="text-xl font-bold mb-4">Customer Login</h2>)}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="email"
@@ -59,11 +68,16 @@ function AdminLogin() {
         />
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Login</button>
       </form>
+      { role === 'admin' ?
       <p className="mt-2 text-sm">
         Don’t have an account? <Link to="/admin/register" className="text-blue-600 underline">Register</Link>
-      </p>
+      </p>:
+      <p className="mt-2 text-sm">
+        Don’t have an account? <Link to="/register" className="text-blue-600 underline">Register</Link>
+      </p>}
+      
     </div>
   );
 }
 
-export default AdminLogin;
+export default Login;
